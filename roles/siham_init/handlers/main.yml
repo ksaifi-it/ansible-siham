@@ -1,0 +1,15 @@
+---
+# handlers file for init-server_siham
+- name: Restart srv
+  reboot:
+
+- name: vsftpd restart
+  service: 
+    name: vsftpd
+    state: restarted
+
+
+- name: postfix restart
+  service: 
+    name: postfix
+    state: restarted

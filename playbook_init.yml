@@ -1,0 +1,6 @@
+- name: Playbook to launch init
+  hosts: all
+  become: true
+
+  roles:
+    - siham_init

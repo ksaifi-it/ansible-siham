@@ -1,0 +1,63 @@
+---
+- name: Siham template Init -APP Remove unnecessary packages
+  yum:
+    name: "{{ role_sihamapp_packages_remove }}"
+    state: absent
+  when: role_sihamapp_packages_remove is defined and role_sihamapp_packages_remove|length > 0
+  notify:
+    - Restart srv
+
+- name: Siham template Init -APP Install necessary packages
+  yum:
+    name: "{{ role_sihamapp_packages_install }}"
+    state: present
+  when: role_sihamapp_packages_install is defined and role_sihamapp_packages_install|length > 0
+  notify: Restart srv
+
+# - name: Siham template Init - APP copy necessary RHEL 7 rpm src packages
+#   copy:
+#     src: "{{ item }}"
+#     dest: "/usr/local/src/{{ item }}"
+#   with_items: "{{ role_sihamapp_rpm_install }}"
+#   when: role_sihamapp_rpm_install is defined and role_sihamapp_rpm_install|length > 0
+
+
+# - debug: msg="{{ ['/usr/local/src/'] | product(role_sihamapp_rpm_install) | map('join') | list }}"
+
+# - name: Siham template Init - install necessary RHEL 7 rpm packages
+#   yum:
+#     name: "{{ ['/usr/local/src/'] | product(role_sihamapp_rpm_install) | map('join') | list }}"
+#     state: present
+#   when: role_sihamapp_rpm_install is defined and role_sihamapp_rpm_install|length > 0
+#   notify: Restart srv
+
+# - name: Siham template Init - Pax configuration
+#   shell:
+#     cmd: update-alternatives --set pax /usr/bin/opax
+
+- name: Siham template Init - Update locate database  
+  command: updatedb
+
+- name: Siham template Init - vSftpd listen configuration 
+  lineinfile:
+    path: /etc/vsftpd/vsftpd.conf
+    state: present
+    regexp: '^listen='
+    line: 'listen=YES'
+  notify: vsftpd restart
+
+- name: Siham template Init - vSftpd ipv6 disable 
+  lineinfile:
+    path: /etc/vsftpd/vsftpd.conf
+    state: present
+    regexp: '^#?listen_ipv6='
+    line: 'listen_ipv6=NO'
+  notify: vsftpd restart
+
+- name: Siham template Init - postfix configuration
+  lineinfile:
+    path: /etc/postfix/main.cf 
+    state: present
+    regexp: '^inet_protocols'
+    line: 'inet_protocols = ipv4'
+  notify: postfix restart

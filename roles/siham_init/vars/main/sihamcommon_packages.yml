@@ -1,0 +1,9 @@
+---
+#Packages à supprimer et à installer communs à app et tools
+sihamcommon_packages_remove: []
+  #- "ksh"
+
+sihamcommon_packages_install: []
+# librairies generales
+  #- "mksh"
+  #- "pax"

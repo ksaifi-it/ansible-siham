@@ -1,0 +1,20 @@
+---
+- name: check if {{ item.mount_point }} directory exists
+  stat: path="{{ item.mount_point }}"
+  register: dir
+
+- name: Siham template Init - Common - create {{ item.mount_point }} folders for nfs shares
+  file:
+    path: "{{ item.mount_point }}"
+    state: directory
+    recurse: yes
+    mode: '0755'
+  when: not dir.stat.exists
+  
+- name: Siham template Init - Common - mount {{ item.nfs_share }}
+  mount:
+    src: "{{ item.nfs_share }}"
+    path: "{{ item.mount_point}}"
+    opts: defaults,auto
+    state: mounted
+    fstype: nfs

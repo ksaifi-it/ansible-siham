@@ -1,0 +1,19 @@
+---
+# defaults file for init-server_siham
+
+siham_is_templatetools: false
+
+siham_is_templateapp: false
+
+siham_init_service_to_disable:
+  - firewalld.service
+
+siham_init_ipv6_disable: yes
+
+sihamcommon_nfs_dir:
+  - mount_point: "/exploit/sources"
+    nfs_share: "sham-xl-filesnf:/data/nfs/storage/sources"
+  - mount_point: "/interfaces"
+    nfs_share: "sham-xl-filesnf:/data/nfs/storage/interfaces"
+  - mount_point: "/exploit/backup"
+    nfs_share: "sham-xl-bakup01:/data/nfs/storage/sauvegarde"

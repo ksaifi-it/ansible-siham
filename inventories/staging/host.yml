@@ -1,0 +1,6 @@
+all:
+  children:
+    web_servers:
+      hosts:
+        as1:
+          ansible_host: 10.0.0.11

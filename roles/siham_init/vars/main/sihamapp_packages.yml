@@ -1,0 +1,76 @@
+---
+#Packages à supprimer et à installer pour template APP
+
+role_sihamapp_rpm_install:
+  - "pax-3.4-19.el7.x86_64.rpm"
+  - "ghostscript-fonts-5.50-32.el7.noarch.rpm"
+  - "compat-libcap1-1.10-7.el7.x86_64.rpm"
+
+role_sihamapp_packages_remove:
+  - "ksh"
+
+role_sihamapp_packages_install:
+  # packages généraux
+  - "mksh"
+  - "vim"
+  - "net-tools"
+  - "java-1.8.0-openjdk" 
+  # ftp  
+  - "vsftpd"
+  - "lftp"
+  # postfix
+  - postfix
+  # Oracle
+  - "gcc"
+  - "gcc-c++"
+  - "libstdc++-devel"
+  - "sysstat"
+  - "elfutils-libelf-devel"
+  # HR Access
+  - "binutils"
+  - "elfutils-libelf"
+  - "glibc"
+  - "glibc-common"
+  - "glibc-devel.i686"
+  - "glibc-devel.x86_64"
+  - "glibc-headers"
+  - "libaio.x86_64"
+  - "libaio.i686"
+  - "libaio-devel.x86_64"
+  - "libaio-devel.i686"
+  - "libgcc.x86_64"
+  - "libgcc.i686"
+  - "libstdc++.x86_64"
+  - "libstdc++.i686"
+  - "libstdc++-devel.x86_64"
+  - "make.x86_64"
+  - "sysstat.x86_64"
+  - "unixODBC.x86_64"
+  - "unixODBC.i686"
+  - "unixODBC-devel.x86_64"
+  - "unixODBC-devel.i686"
+  - "libXtst.i686"
+  - "libXtst.x86_64"
+  - "libXi.i686"
+  - "libXi.x86_64"
+  - "ghostscript.x86_64"
+  - "openssl.x86_64"
+  - "openssl-devel.x86_64"
+  - "ftp.x86_64"
+  # Librairie pour Cobol
+  - "ed.x86_64"
+  # Librairie pour scripts demarrage/arret
+  - "at.x86_64"
+  # Librairie pour Nagios
+  - "libxml2.x86_64"
+  - "libxml2-devel.x86_64"
+  # Librairie pour utils
+  - "gd.x86_64"
+  - "smartmontools.x86_64"
+  - "perl.x86_64"
+  - "psmisc.x86_64"
+  - "zip.x86_64"
+  - "unzip.x86_64"
+  - "telnet.x86_64"
+  - "mlocate.x86_64"
+  - "mutt.x86_64"

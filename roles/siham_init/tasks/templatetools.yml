@@ -1,0 +1,16 @@
+---
+- name: Siham template Init - Tools - Remove unnecessary packages
+  yum:
+    name: "{{ role_sihamtools_packages_remove }}"
+    state: absent
+  when: role_sihamtools_packages_remove is defined and role_sihamtools_packages_remove|length > 0
+  notify:
+    - Restart srv
+
+- name: Siham template Init - Tools - Install necessary packages
+  yum:
+    name: "{{ role_sihamtools_packages_install }}"
+    state: present
+  when: role_sihamtools_packages_install is defined and role_sihamtools_packages_install|length > 0
+  notify:
+    - Restart srv

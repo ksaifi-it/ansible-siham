@@ -1,0 +1,73 @@
+---
+- name: Siham template Init - Common - Disable IPv6 
+  sysctl:
+    name: "{{ item }}"
+    value: "1"
+    state: "present"
+    reload: "yes"
+  with_items:
+    - net.ipv6.conf.all.disable_ipv6
+    - net.ipv6.conf.default.disable_ipv6
+    - net.ipv6.conf.lo.disable_ipv6
+  when: siham_init_ipv6_disable |bool
+
+- name: Siham template Init - Common - populate service facts
+  service_facts:
+
+- name: Siham template Init - Common - stop and disable necessary services 
+  service: 
+    name: "{{ item }}"
+    enabled: false
+    state: stopped
+  when: "item in service_names"
+  loop: "{{ siham_init_service_to_disable}}"
+  vars:
+    service_names: "{{ services|dict2items|map(attribute='value.name')|list }}"
+
+- name: Siham template Init - Common - Gestion des dossiers Siham
+  block:
+  
+  - name: Siham template Init - Common - create necessary folders under /data
+    file:
+      path: "/data/{{ item }}"
+      state: directory
+      mode: '0755'
+    with_items: "{{ sihamcommon_bind_dir }}" 
+    
+  # Code si besoin de faire un mount bind à la place de liens. Privilégier les liens symboliques.
+  # - name: Siham template Init - Common - bind mount under / corresponding /data folders
+  #   mount:
+  #     src: "/data/{{ item }}"
+  #     path: "/{{ item }}"
+  #     opts: bind
+  #     state: mounted
+  #     fstype: none
+  #   with_items: "{{ sihamcommon_bind_dir }}"
+  
+  - name: Siham template Init - Common - create corresponding links under /
+    file:
+      src: "/data/{{ item }}"
+      dest: "/{{ item }}"
+      state: link
+    with_items: "{{ sihamcommon_bind_dir }}"
+  
+  # block end
+  when: sihamcommon_bind_dir is defined and sihamcommon_bind_dir|length > 0
+
+#- name: Siham template Init - Common - Gestion nfs
+#  include_tasks: nfsmount.yml
+#  loop: "{{ sihamcommon_nfs_dir }}"
+#  when: sihamcommon_nfs_dir is defined and sihamcommon_nfs_dir|length > 0
+
+- name: Siham template Init - Common - Disable SELinux
+  selinux:
+    state: disabled
+  notify: Restart srv
+
+- name: Siham template Init - Common - Ensure Defaults requiretty is not commented in sudoers file
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^[# ]*Defaults\s+requiretty'
+    line: 'Defaults requiretty'
+    validate: /usr/sbin/visudo -cf %s

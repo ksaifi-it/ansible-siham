@@ -1,0 +1,11 @@
+---
+#Packages à supprimer et à installer pour template TOOLS
+
+#TODO
+
+role_sihamtools_packages_remove: []
+  #- "ksh"
+
+role_sihamtools_packages_install: []
+# Apache
+  #- "httpd"

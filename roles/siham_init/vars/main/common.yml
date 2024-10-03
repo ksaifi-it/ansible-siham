@@ -1,0 +1,12 @@
+---
+#Variables communes à tous les environnements
+
+sihamcommon_bind_dir:
+  - exploit
+  - distrib
+
+
+
+
+
+

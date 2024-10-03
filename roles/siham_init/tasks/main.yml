@@ -1,0 +1,20 @@
+---
+# tasks file for init-server_siham
+
+# common  parts
+- name: Siham template Init - common tasks
+  import_tasks: common.yml
+
+#siham app parts
+- name: Siham template Init - include app specific tasks
+  include_tasks: templateapp.yml
+  when: siham_is_templateapp |bool
+
+# siham tools parts
+- name: Siham template Init - include tools specific tasks
+  include_tasks: templatetools.yml
+  when: siham_is_templatetools |bool
+
+# siham flush handlers
+- name: Force all notified handlers to run now
+  meta: flush_handlers
